@@ -18,8 +18,8 @@ document.querySelector("#submit").addEventListener("click", function () {
     inputTime.getMonth() + 1
   }-${inputTime.getFullYear()}`;
 
-  if (title_content === "" || description === "") {
-    alert("Do not leave Title or Description empty!");
+  if (title_content === "") {
+    alert("Do not leave Title empty!");
   } else {
     const task_obj = {
       name: title_content,

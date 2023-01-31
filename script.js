@@ -18,21 +18,24 @@ document.querySelector("#submit").addEventListener("click", function () {
     inputTime.getMonth() + 1
   }-${inputTime.getFullYear()}`;
 
-  const task_obj = {
-    name: title_content,
-    description: description,
-    time: time,
-  };
+  if (title_content === "" || description === "") {
+    alert("Do not leave Title or Description empty!");
+  } else {
+    const task_obj = {
+      name: title_content,
+      description: description,
+      time: time,
+    };
 
-  localStorage.setItem(title_content, JSON.stringify(task_obj));
+    localStorage.setItem(title_content, JSON.stringify(task_obj));
 
-  titles.push(title_content);
-  localStorage.setItem("keys", titles);
+    titles.push(title_content);
+    localStorage.setItem("keys", titles);
 
-  title.value = "";
-  desc.value = "";
+    title.value = "";
+    desc.value = "";
 
-  container.innerHTML += `<article class="task">
+    container.innerHTML += `<article class="task">
         <header>${title_content}</header>
         ${description}
         <footer>
@@ -41,23 +44,24 @@ document.querySelector("#submit").addEventListener("click", function () {
         </footer>
       </article>`;
 
-  const tasks = document.querySelectorAll(".task");
+    const tasks = document.querySelectorAll(".task");
 
-  const remove = document.querySelectorAll(".delete");
+    const remove = document.querySelectorAll(".delete");
 
-  for (let i = 0; i < remove.length; i++) {
-    remove[i].addEventListener("click", function () {
-      tasks[i].remove();
-      const removed = this.parentNode.parentNode.childNodes[1].innerHTML;
+    for (let i = 0; i < remove.length; i++) {
+      remove[i].addEventListener("click", function () {
+        tasks[i].remove();
+        const removed = this.parentNode.parentNode.childNodes[1].innerHTML;
 
-      for (let i = 0; i < titles.length; i++) {
-        if (titles[i] == removed) {
-          titles.splice(i, 1);
+        for (let i = 0; i < titles.length; i++) {
+          if (titles[i] == removed) {
+            titles.splice(i, 1);
+          }
         }
-      }
-      localStorage.setItem("keys", titles);
-      localStorage.removeItem(removed);
-    });
+        localStorage.setItem("keys", titles);
+        localStorage.removeItem(removed);
+      });
+    }
   }
 });
 

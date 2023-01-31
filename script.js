@@ -43,29 +43,26 @@ document.querySelector("#submit").addEventListener("click", function () {
           <button class="delete">Remove</button>
         </footer>
       </article>`;
+  }
+  const tasks = document.querySelectorAll(".task");
 
-    const tasks = document.querySelectorAll(".task");
+  const remove = document.querySelectorAll(".delete");
 
-    const remove = document.querySelectorAll(".delete");
+  for (let i = 0; i < remove.length; i++) {
+    remove[i].addEventListener("click", function () {
+      tasks[i].remove();
+      const removed = this.parentNode.parentNode.childNodes[1].innerHTML;
 
-    for (let i = 0; i < remove.length; i++) {
-      remove[i].addEventListener("click", function () {
-        tasks[i].remove();
-        const removed = this.parentNode.parentNode.childNodes[1].innerHTML;
-
-        for (let i = 0; i < titles.length; i++) {
-          if (titles[i] == removed) {
-            titles.splice(i, 1);
-          }
+      for (let i = 0; i < titles.length; i++) {
+        if (titles[i] == removed) {
+          titles.splice(i, 1);
         }
-        localStorage.setItem("keys", titles);
-        localStorage.removeItem(removed);
-      });
-    }
+      }
+      localStorage.setItem("keys", titles);
+      localStorage.removeItem(removed);
+    });
   }
 });
-
-const body = document.querySelector("body");
 
 window.addEventListener("load", function () {
   // alert("Document loaded");

@@ -2,8 +2,6 @@ const title = document.querySelector("#title");
 
 const desc = document.querySelector("#desc");
 
-let titles = [];
-
 const container = document.querySelector("#container");
 document.querySelector("#submit").addEventListener("click", function () {
   const inputTime = new Date();
@@ -18,24 +16,18 @@ document.querySelector("#submit").addEventListener("click", function () {
     inputTime.getMonth() + 1
   }-${inputTime.getFullYear()}`;
 
-  if (title_content === "") {
-    alert("Do not leave Title empty!");
-  } else {
-    const task_obj = {
-      name: title_content,
-      description: description,
-      time: time,
-    };
+  const task_obj = {
+    name: title_content,
+    description: description,
+    time: time,
+  };
 
-    localStorage.setItem(title_content, JSON.stringify(task_obj));
+  localStorage.setItem(title_content, JSON.stringify(task_obj));
 
-    titles.push(title_content);
-    localStorage.setItem("keys", titles);
+  title.value = "";
+  desc.value = "";
 
-    title.value = "";
-    desc.value = "";
-
-    container.innerHTML += `<article class="task">
+  container.innerHTML += `<article class="task">
         <header>${title_content}</header>
         ${description}
         <footer>
@@ -43,7 +35,7 @@ document.querySelector("#submit").addEventListener("click", function () {
           <button class="delete">Remove</button>
         </footer>
       </article>`;
-  }
+
   const tasks = document.querySelectorAll(".task");
 
   const remove = document.querySelectorAll(".delete");
@@ -52,29 +44,25 @@ document.querySelector("#submit").addEventListener("click", function () {
     remove[i].addEventListener("click", function () {
       tasks[i].remove();
       const removed = this.parentNode.parentNode.childNodes[1].innerHTML;
-
-      for (let i = 0; i < titles.length; i++) {
-        if (titles[i] == removed) {
-          titles.splice(i, 1);
-        }
-      }
-      localStorage.setItem("keys", titles);
       localStorage.removeItem(removed);
     });
   }
 });
 
 window.addEventListener("load", function () {
-  // alert("Document loaded");
-  const prevs = localStorage.getItem("keys").split(",");
+  const prevs = Object.keys(this.localStorage);
+
+  console.log(prevs);
 
   if (prevs.length === 0) {
   }
 
   for (let i = 0; i < prevs.length; i++) {
     const task_obj = JSON.parse(localStorage.getItem(prevs[i]));
-    // console.log(task_obj);
-    container.innerHTML += `<article class="task">
+
+    if (!task_obj["name"] || !task_obj["time"]) {
+    } else {
+      container.innerHTML += `<article class="task">
         <header>${task_obj.name}</header>
         ${task_obj.description}
         <footer>
@@ -82,6 +70,7 @@ window.addEventListener("load", function () {
           <button class="delete">Remove</button>
         </footer>
       </article>`;
+    }
   }
   const tasks = document.querySelectorAll(".task");
 
@@ -91,13 +80,6 @@ window.addEventListener("load", function () {
     remove[i].addEventListener("click", function () {
       tasks[i].remove();
       const removed = this.parentNode.parentNode.childNodes[1].innerHTML;
-
-      for (let i = 0; i < titles.length; i++) {
-        if (titles[i] == removed) {
-          titles.splice(i, 1);
-        }
-      }
-      localStorage.setItem("keys", titles);
       localStorage.removeItem(removed);
     });
   }

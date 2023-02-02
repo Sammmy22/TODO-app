@@ -52,17 +52,29 @@ document.querySelector("#submit").addEventListener("click", function () {
 window.addEventListener("load", function () {
   const prevs = Object.keys(this.localStorage);
 
-  console.log(prevs);
-
   if (prevs.length === 0) {
   }
 
   for (let i = 0; i < prevs.length; i++) {
+    try {
+      JSON.parse(localStorage.getItem(prevs[i]));
+    } catch (e) {
+      if (e instanceof SyntaxError) {
+        this.localStorage.removeItem(prevs[i]);
+      }
+    }
+
     const task_obj = JSON.parse(localStorage.getItem(prevs[i]));
 
-    if (!task_obj["name"] || !task_obj["time"]) {
-    } else {
-      container.innerHTML += `<article class="task">
+    try {
+      !task_obj["name"] || !task_obj["time"];
+    } catch (error) {
+      if (error instanceof TypeError) {
+        continue;
+      }
+    }
+
+    container.innerHTML += `<article class="task">
         <header>${task_obj.name}</header>
         ${task_obj.description}
         <footer>
@@ -70,7 +82,6 @@ window.addEventListener("load", function () {
           <button class="delete">Remove</button>
         </footer>
       </article>`;
-    }
   }
   const tasks = document.querySelectorAll(".task");
 

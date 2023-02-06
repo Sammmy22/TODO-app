@@ -8,6 +8,9 @@ document.querySelector("#submit").addEventListener("click", function () {
   let title_content = title.value;
   let description = desc.value;
 
+  if (title_content === "") {
+  }
+
   const time = `${inputTime.getHours()}:${
     inputTime.getMinutes() < 10
       ? "0" + inputTime.getMinutes()

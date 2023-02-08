@@ -9,35 +9,36 @@ document.querySelector("#submit").addEventListener("click", function () {
   let description = desc.value;
 
   if (title_content === "") {
+    alert("A title is necessary!");
+  } else {
+    const time = `${inputTime.getHours()}:${
+      inputTime.getMinutes() < 10
+        ? "0" + inputTime.getMinutes()
+        : inputTime.getMinutes()
+    } ${inputTime.getDate()}-${
+      inputTime.getMonth() + 1
+    }-${inputTime.getFullYear()}`;
+
+    const task_obj = {
+      name: title_content,
+      description: description,
+      time: time,
+    };
+
+    localStorage.setItem(title_content, JSON.stringify(task_obj));
+
+    title.value = "";
+    desc.value = "";
+
+    container.innerHTML += `<article class="task">
+          <header>${title_content}</header>
+          ${description}
+          <footer>
+            Added on: ${time} 
+            <button class="delete">Remove</button>
+          </footer>
+        </article>`;
   }
-
-  const time = `${inputTime.getHours()}:${
-    inputTime.getMinutes() < 10
-      ? "0" + inputTime.getMinutes()
-      : inputTime.getMinutes()
-  } ${inputTime.getDate()}-${
-    inputTime.getMonth() + 1
-  }-${inputTime.getFullYear()}`;
-
-  const task_obj = {
-    name: title_content,
-    description: description,
-    time: time,
-  };
-
-  localStorage.setItem(title_content, JSON.stringify(task_obj));
-
-  title.value = "";
-  desc.value = "";
-
-  container.innerHTML += `<article class="task">
-        <header>${title_content}</header>
-        ${description}
-        <footer>
-          Added on: ${time} 
-          <button class="delete">Remove</button>
-        </footer>
-      </article>`;
 
   const tasks = document.querySelectorAll(".task");
 
